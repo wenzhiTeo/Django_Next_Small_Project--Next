@@ -8,8 +8,9 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import Header from "../components/header";
+import Header from "../../components/header";
 import Link from "next/Link";
+import { useRouter } from "next/router";
 
 const useStyles = makeStyles((theme) => ({
   cardGrid: {
@@ -27,7 +28,12 @@ const useStyles = makeStyles((theme) => ({
 
 function Home({ posts, categories }) {
   const classes = useStyles();
+  const router = useRouter();
 
+  // to waiting the resource being fetch
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  }
   return (
     <>
       <Header data={categories} />
@@ -37,7 +43,7 @@ function Home({ posts, categories }) {
             {posts.map((post) => (
               <Link
                 key={post.id}
-                href={`product/${encodeURIComponent(post.slug)}`}
+                href={`/product/${encodeURIComponent(post.slug)}`}
               >
                 <Grid item xs={6} sm={4} md={3}>
                   <Card className={classes.card}>
@@ -65,8 +71,18 @@ function Home({ posts, categories }) {
   );
 }
 
-export async function getStaticProps() {
-  const result = await fetch("http://127.0.0.1:8000/api/");
+//Pre fetch purpose
+export async function getStaticPaths() {
+  return {
+    paths: [{ params: { slug: "" } }],
+    fallback: true,
+  };
+}
+
+export async function getStaticProps({ params }) {
+  const result = await fetch(
+    `http://127.0.0.1:8000/api/category/${params.slug}`
+  );
   const posts = await result.json();
 
   const category_result = await fetch("http://127.0.0.1:8000/api/category/");
