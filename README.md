@@ -1,6 +1,6 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-# This project using react 17.0.1 and Material-UI v4 to learn the core concept, perhaps update in future, maybe?
+## This project using react 17.0.1 and Material-UI v4 to learn the core concept, perhaps update in future, maybe?
 
 ## Getting Started
 
